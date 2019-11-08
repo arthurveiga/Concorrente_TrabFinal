@@ -4,4 +4,4 @@
 
 Problema do Banheiro Unissex
 
-* **Compile_execute:** gcc -pthread banheiro_unissex.c -o exec && ./exec && rm exec
+* **Compile_execute:** gcc -pthread banheiro_unissex.c -o exec && ./exec
