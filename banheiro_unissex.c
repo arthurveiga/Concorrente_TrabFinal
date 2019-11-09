@@ -10,7 +10,19 @@
 #include <semaphore.h>
 #include <time.h> //para srand
 
-int num_banheiros = 1, num_compartimentos = 1, num_generos = 1, num_pessoas = 100;
+const int num_banheiros = 1, num_compartimentos = 1, num_generos = 1, num_pessoas = 100;
+sem_t banheiro; //o semáforo representa o banheiro. O num_compartimentos é o tamanho do banheiro.
+int genero_no_banheiro = 0; //essa variável que vai mostrar qual é o gênero que deve entrar. Definimos como -1, que representa que o banheiro está vazio. provavelmente essa variável deverá ser um array de tamanho num_compartimentos
+pthread_cond_t entrada_no_banheiro; //essa é a variável condicional que faz com que cada pessoa (thread) entre um por um no banheiro (o banheiro tem uma porta de entrada só)
+
+/**
+ * Ou seja, a 1a pessoa entrou no banheiro (pegou a variável condicional), mudou a 
+ * condicional genero_no_banheiro para o seu gênero definido na main (como id de thread) e 
+ * entrou no banheiro e agora, todos os outros que são do mesmo gênero entram. Isso 
+ * acontece até acabarem todos do mesmo gênero, ou se o banheiro esvaziar e uma pessoa de 
+ * outro gênero entre no banheiro.
+ * 
+ */
 
 void input_test()
 {
@@ -26,7 +38,10 @@ void input_test()
 
 void *pessoa(void *id)
 {
-    
+    int alivio = 0; // variável local para saber se a pessoa fez o que tinha que fazer
+    while (alivio == 0) {
+
+    }
 };
 
 int main()
@@ -35,6 +50,8 @@ int main()
     srand(time(NULL)); //sempre que executar vai mudar os valores gerados aleatoriamente
     
     //input_test(); //alterando manualmente, quando terminar utiliza
+
+
     
     pthread_t pessoas[num_pessoas];
     
