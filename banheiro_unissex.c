@@ -154,12 +154,14 @@ void banheiro_livre(int genero_pessoa, int posicao_fila)
         pthread_mutex_unlock(&mutx_genero_no_banheiro);
     }
 }
+
 void *pessoa(void *dados_pes)
 {
     struct dados_pessoa *d_pes = dados_pes;
 
     int genero_pessoa = d_pes->gen_pessoa;
     int posicao_fila = d_pes->pos_fila;
+    srand((unsigned) time(NULL) * posicao_fila); //sempre que executar vai mudar os valores gerados aleatoriamente
     int alivio = 0; // variável local para saber se a pessoa fez o que tinha que fazer
 
     for(int i=0;i<num_pessoas;i++)
@@ -176,8 +178,6 @@ void *pessoa(void *dados_pes)
 int main()
 {
     /*Como gerar valores aleatoriamente: exemplo: 1 + rand() % (100); 1 ate 100 ou rand() % (100); 0 ate 99 */
-    srand(time(NULL)); //sempre que executar vai mudar os valores gerados aleatoriamente
-
     //input_test(); //alterando manualmente, quando terminar utiliza
 
     struct dados_pessoa d_pes;
