@@ -170,7 +170,7 @@ void *pessoa(void *dados_pes)
             banheiro_ocupado_homem(genero_pessoa, posicao_fila);
         else
             banheiro_ocupado_mulher(genero_pessoa, posicao_fila);
-            
+        time_banheiro(genero_pessoa, posicao_fila);
         banheiro_livre(genero_pessoa, posicao_fila);
     }
 };
