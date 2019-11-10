@@ -37,18 +37,18 @@ struct dados_pessoa
  */
 
 // imprimi na tela o genero
-void print_genero(int genero)
+void print_genero(int genero, int posicao_fila)
 {
     if (genero != VAZIO)
     {
         printf("Banheiro ocupado:\n");
         if (genero == HOMEM)
-            printf("Homem no banheiro\n");
+            printf("    %d - Homem no banheiro\n\n", posicao_fila);
         else if (genero == MULHER)
-            printf("Mulher no banheiro\n");
+            printf("    %d - Mulher no banheiro\n\n", posicao_fila);
     }
     else if (genero == VAZIO)
-        printf("\nBanheiro livre");
+        printf("Banheiro livre\n\n");
 };
 void input_test()
 {
@@ -64,12 +64,12 @@ void input_test()
 
 void banheiro_ocupado_mulher(int genero_pessoa, int posicao_fila)
 {
-    print_genero(genero_pessoa);
+    print_genero(genero_pessoa, posicao_fila);
     if (num_pessoas_no_banheiro == num_compartimentos) // se atingiu capacidade maxima do banheiro muda o genero
     {
         pthread_mutex_lock(&mutx_genero_no_banheiro);
         genero_no_banheiro = genero_pessoa;
-        print_genero(genero_no_banheiro);
+        print_genero(genero_no_banheiro, posicao_fila);
         pthread_mutex_unlock(&mutx_genero_no_banheiro);
 
         pthread_mutex_lock(&mutx_entrada_no_banheiro);
@@ -99,12 +99,12 @@ void banheiro_ocupado_mulher(int genero_pessoa, int posicao_fila)
 }
 void banheiro_ocupado_homem(int genero_pessoa, int posicao_fila)
 {
-    print_genero(genero_pessoa);
+    print_genero(genero_pessoa, posicao_fila);
     if (num_pessoas_no_banheiro == num_compartimentos) // se atingiu capacidade maxima do banheiro muda o genero
     {
         pthread_mutex_lock(&mutx_genero_no_banheiro);
         genero_no_banheiro = genero_pessoa;
-        print_genero(genero_no_banheiro);
+        print_genero(genero_no_banheiro, posicao_fila);
         pthread_mutex_unlock(&mutx_genero_no_banheiro);
 
         pthread_mutex_lock(&mutx_entrada_no_banheiro);
@@ -144,11 +144,13 @@ void banheiro_livre(int genero_pessoa, int posicao_fila)
         pthread_mutex_unlock(&mutx_genero_no_banheiro);
     }
 }
-void time_banheiro(int genero){
+void time_banheiro(int genero, int posicao_fila){
     int tempo = 1 + rand() % 3; // pra testes um valor pequeno
     sleep(tempo); 
-    print_genero(genero); 
-    printf("Utilizando banheiro: %d", tempo);
+    printf("------------Tempo-------------------\n");
+    print_genero(genero, posicao_fila);
+    printf("Utilizando banheiro: %d\n", tempo);
+    printf("------------------------------------\n\n");
 };
 void *pessoa(void *dados_pes)
 {
@@ -165,7 +167,7 @@ void *pessoa(void *dados_pes)
         else
             banheiro_ocupado_mulher(genero_pessoa, posicao_fila);
 
-        time_banheiro(genero_pessoa);
+        time_banheiro(genero_pessoa, posicao_fila);
         banheiro_livre(genero_pessoa, posicao_fila);
     }
 };
