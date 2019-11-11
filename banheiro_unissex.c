@@ -15,7 +15,7 @@
 #define VAZIO -1 // banheiro vazio
 int gen_pessoa; //gênero da pessoa
 
-int num_banheiros = 1, num_compartimentos = 2, num_generos = 1, num_pessoas = 5;
+int num_banheiros = 1, num_compartimentos = 1, num_generos = 1, num_pessoas = 6;
 int genero_no_banheiro = 0;               //essa variável que vai mostrar qual é o gênero que deve entrar. Definimos como -1, que representa que o banheiro está vazio. provavelmente essa variável deverá ser um array de tamanho num_compartimentos
 int num_pessoas_no_banheiro = 0;          //essa variável mostra quantos estão no banheiro
 sem_t sem_compartimentos;                 //o semáforo representa o banheiro. O num_compartimentos é o tamanho do banheiro.
@@ -92,6 +92,11 @@ void banheiro_ocupado_mulher(int genero_pessoa, int posicao_fila)
         {
             while (genero_no_banheiro == HOMEM)
             {  // faz nada espera genero ser MULHER
+                if(genero_no_banheiro == VAZIO){
+                    pthread_mutex_lock(&mutx_genero_no_banheiro);
+                    genero_no_banheiro = MULHER;
+                    pthread_mutex_unlock(&mutx_genero_no_banheiro);
+                }
             }
             banheiro_ocupado_mulher(genero_pessoa, posicao_fila);
         }
@@ -127,6 +132,12 @@ void banheiro_ocupado_homem(int genero_pessoa, int posicao_fila)
         {
             while (genero_no_banheiro == MULHER)
             { // faz nada espera genero ser homem
+                if (genero_no_banheiro == VAZIO)
+                {
+                    pthread_mutex_lock(&mutx_genero_no_banheiro);
+                    genero_no_banheiro = HOMEM;
+                    pthread_mutex_unlock(&mutx_genero_no_banheiro);
+                }
             }
             banheiro_ocupado_homem(genero_pessoa, posicao_fila);
         }
@@ -140,7 +151,7 @@ void banheiro_livre(int genero_pessoa, int posicao_fila)
     if (num_pessoas_no_banheiro == num_compartimentos) // se atingiu capacidade maxima muda o genero
     {
         pthread_mutex_lock(&mutx_genero_no_banheiro);
-        genero_no_banheiro = genero_pessoa;
+        genero_no_banheiro = VAZIO;
         pthread_mutex_unlock(&mutx_genero_no_banheiro);
     }
 }
