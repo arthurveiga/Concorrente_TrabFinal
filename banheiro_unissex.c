@@ -15,7 +15,7 @@
 #define VAZIO -1 // banheiro vazio
 int gen_pessoa; //gênero da pessoa
 
-int num_banheiros = 1, num_compartimentos = 1, num_generos = 1, num_pessoas = 6;
+int num_banheiros, num_compartimentos, num_generos, num_pessoas;
 int genero_no_banheiro = 0;               //essa variável que vai mostrar qual é o gênero que deve entrar. Definimos como -1, que representa que o banheiro está vazio. provavelmente essa variável deverá ser um array de tamanho num_compartimentos
 int num_pessoas_no_banheiro = 0;          //essa variável mostra quantos estão no banheiro
 sem_t sem_compartimentos;                 //o semáforo representa o banheiro. O num_compartimentos é o tamanho do banheiro.
@@ -194,7 +194,7 @@ void *pessoa_mulher(void *pos_fila)
 int main()
 {
     /*Como gerar valores aleatoriamente: exemplo: 1 + rand() % (100); 1 ate 100 ou rand() % (100); 0 ate 99 */
-    //input_test(); //alterando manualmente, quando terminar utiliza
+    input_test(); //alterando manualmente, quando terminar utiliza
 
     pthread_t pessoas[num_pessoas];
 
