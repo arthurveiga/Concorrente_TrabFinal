@@ -53,11 +53,11 @@ int time_banheiro(int genero, int posicao_fila, int alivio)
 {
 
     int tempo = 1 + rand() % 10; // pra testes um valor pequeno
-    sleep(tempo);
     printf("------------ Tempo------------------\n");
     print_genero(genero, posicao_fila);
     printf("Utilizando banheiro por %d segundos\n", tempo);
     printf("------------------------------------\n\n");
+    sleep(tempo);
     alivio = 1;
     return alivio;
 };
